@@ -17,12 +17,13 @@
     {
         return(
             <Layout headerFooter={headerFooter || {}}>
-                Data Not found 1
+                Data Not found 
             </Layout>
         )
     }else{
         return (
             <Layout headerFooter={headerFooter || {}}>
+				<p>hi</p>
                 <Categories categories={categories || {}}></Categories>
             </Layout>
         )
