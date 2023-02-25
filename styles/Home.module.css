@@ -151,6 +151,19 @@
   background-clip: content-box;
 }
 
+.left_side_bar{width: 20%;float: left;}
+.product_filter_right{width: 80%; float: left;}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.column {
+  float: left;
+  width: 50%;
+}
+
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {

@@ -1,38 +1,78 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 🎨 Next.js WooCommerce REST API
+[![Project Status: Active.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+![Stars](https://img.shields.io/github/stars/imranhsayed/nextjs-woocommerce-restapi?label=%E2%AD%90%20Stars)
+![Forks](https://img.shields.io/github/forks/imranhsayed/nextjs-woocommerce-restapi?color=%23ff69b4)
+![Contributors](https://img.shields.io/github/contributors/imranhsayed/nextjs-woocommerce-restapi?color=blue)
+![Follow](https://img.shields.io/github/followers/imranhsayed?label=Please%20follow%20%20to%20support%20my%20work%20%F0%9F%99%8F&style=social)
 
-## Getting Started
+- React WooCommerce Theme, using Decoupled Architecture in Next.js
+- Backend in WordPress
+- Front end in React.
+- Data is Fetched through REST API.
 
-First, run the development server:
+## Features
+1. Home Page, Blog Page, Post Page
+2. Post Preview ( Coming Soon )
+3. Product Pagination ( Coming Soon )
+4. Load More Products ( Coming Soon )
+5. REST API endpoints.
+6. Header and Footer in Next.js fetching from WordPress Menu items.
+7. WordPress Widgets displayed on Next.js frontend.
+8. Site title, tagline, copyright text, social links sourced from WordPress.
+9. Next.js Image component, that has image optimization at request time
+10. Authentication with JWT and Http Only Cookie implementation. ( Coming Soon )
+11. Login feature for WP Post Preview in Next.js ( Coming Soon )
+12. Incremental Static (Re)generation and automatic creation of New Static post pages
+    without having to re-build next.js the application. ( Coming Soon )
+13. Gutenberg styles support
+14. Single Product Page With Gallery Carousel.
+15. Checkout Page with Stripe Payment Gateway Integration.
+
+## [Tutorial Course](https://www.youtube.com/playlist?list=PLD8nQCAhR3tSRwsvzRtogv9MFkEWo5d9c)
+
+## [Live Demo Link](https://nextjs-woocommerce-restapi-virid.vercel.app/)
+
+## Setup
+
+First clone/fork the repo and cd into it.
 
 ```bash
+git clone https://github.com/imranhsayed/nextjs-woocommerce-restapi.git
+cd nextjs-woocommerce-restapi
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Add Headless features for WordPress
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- Install and Activate following WordPress Plugins:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+* [headless-cms](https://github.com/imranhsayed/headless-cms)
+* [woocommerce](https://wordpress.org/plugins/woocommerce/)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Configuration :wrench:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. (Required) Create a `.env` file taking reference from `.env-example` and update your WordPressSite URL and Frontend next.js URL.
+- `NEXT_PUBLIC_WORDPRESS_URL=https://example.com`
+- `NEXT_PUBLIC_SITE_URL=http://localhost.com` ( This will be your frontend Next.js URL)
 
-## Learn More
+2. Add your `WC_CONSUMER_KEY` and `WC_CONSUMER_SECRET` to the `.env` by following [WooCommerce > Settings > Advanced > REST API](https://woocommerce.github.io/woocommerce-rest-api-docs/#authentication)
 
-To learn more about Next.js, take a look at the following resources:
+2. In your WordPress Dashboard, Go to Settings > General > Site Address (URL) ( Set this to Frontend URL e.g. http://localhost:3000 during development )
+3. Create the Header and Footer Menus In WordPress Dashboard and set them to HCMS Header menu and HCMS Footer Menu respectively.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Useful Links
+- [Stripe](https://dashboard.stripe.com/)
+- [Getting Stripe API Keys](https://codeytek.com/create-stripe-checkout-in-next-js-stripe-session-stripe-webhook/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Versioning :bookmark_tabs:
 
-## Deploy on Vercel
+I use [Git](https://github.com/) for versioning.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Author :bust_in_silhouette:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+* **[Imran Sayed](https://twitter.com/imranhsayed)**
+
+## License :page_with_curl:
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
