@@ -14,6 +14,9 @@ import { useRouter } from 'next/router';
 
 export default function Product( { headerFooter, product } ) {
 	console.log('product',product);
+	const { yoast_head_json } = product?.yoast_head_json ?? {};
+	
+	//console.log('yoast_head_json',yoast_head_json);
 	const router = useRouter();
 	
 	// If the page is not yet generated, this will be displayed
@@ -23,7 +26,7 @@ export default function Product( { headerFooter, product } ) {
 	}
 	
 	return (
-		<Layout headerFooter={ headerFooter || {} }>
+		<Layout headerFooter={ headerFooter || {} } yoast_head_json={yoast_head_json || {}}>
 			<SingleProduct product={ product }/>
 		</Layout>
 	);

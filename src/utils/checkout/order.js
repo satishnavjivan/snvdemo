@@ -66,6 +66,13 @@ export const getCreateOrderData = ( order, products ) => {
 		payment_method: order?.paymentMethod,
 		payment_method_title: order?.paymentMethod,
 		line_items: getCreateOrderLineItems( products ),
+		shipping_lines: [
+			{
+			  method_id: "flat_rate",
+			  method_title: "Flat Rate",
+			  total: "10.00"
+			}
+		  ]
 	};
 };
 

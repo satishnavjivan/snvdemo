@@ -14,7 +14,7 @@ import Layout from '../src/components/layout';
 export default function Home({ headerFooter, products }) {
 	return (
 		<Layout headerFooter={headerFooter || {}}>
-			<Products products={products}/> 
+			<Products products={products}/>
 		</Layout>
 	)
 }

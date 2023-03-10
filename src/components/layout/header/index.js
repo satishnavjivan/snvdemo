@@ -8,7 +8,7 @@ import { AppContext } from '../../context';
 import { useRouter } from "next/router";
 import {Breadcrumbs} from "../../breadcrumbs";
 
-const Header = ( { header } ) => {
+const Header = ( { header,yoast_head_json } ) => {
 	
 	const [ cart, setCart ] = useContext( AppContext );
 	const { headerMenuItems, siteDescription, siteLogoUrl, siteTitle, favicon } = header || {};
@@ -17,11 +17,21 @@ const Header = ( { header } ) => {
 
 	const router = useRouter();
     const query = router.asPath;
+	var title = '';
+	var description = '';
+	if(!isEmpty(yoast_head_json))
+	{
+		title = yoast_head_json.title;
+		description = yoast_head_json.description;
+	}
+	
+	
 	console.log(router);
 	return (
 		<>
 			<Head>
-				<title>{ siteTitle || 'Nexts WooCommerce' }</title>
+				<title> {title || siteTitle}</title>
+				<meta name="description" content={description  || ''} />
 				<link rel="icon" href={ favicon || '/favicon.ico' }/>
 			</Head>
 			<div className="header">
@@ -67,21 +77,21 @@ const Header = ( { header } ) => {
 								<a href="#responsive-header"
 								   className="flex mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
 									<span className="flex flex-row items-center lg:flex-col">
-									<User className="mr-1 lg:mr-0"/>
+									<User className="mr-1 lg:mr-0" height="18"/>
 									Profile
 									</span>
 								</a>
 								<a href="#responsive-header"
 								   className="flex mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
 									<span className="flex flex-row items-center lg:flex-col">
-										<Wishlist className="mr-1 lg:mr-0"/>
+										<Wishlist className="mr-1 lg:mr-0" height="18"/>
 										Wishlist
 									</span>
 								</a>
 								<Link href="/cart">
 									<a className="flex mt-4 lg:inline-block lg:mt-0 text-black hover:text-black mr-10">
 									<span className="flex flex-row items-center lg:flex-col">
-									<Bag className="mr-1 lg:mr-0"/>
+									<Bag className="mr-1 lg:mr-0" height="18"/>
 										<span className="ml-1">Bag{ cart?.totalQty ? `(${cart?.totalQty})` : null }</span>
 									</span>
 									</a>

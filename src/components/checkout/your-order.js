@@ -1,5 +1,6 @@
 
 
+import { isEmpty } from 'lodash';
 import { Fragment } from 'react';
 import CheckoutCartItem from "./checkout-cart-item";
 
@@ -24,6 +25,20 @@ const YourOrder = ( { cart } ) => {
 								<CheckoutCartItem key={ item?.productId ?? index } item={ item } />
 							) )
 						) }
+						{/*Shipping changes*/}
+						{
+							 (cart.shippingCharges != '') ? (
+								<>
+								  <tr className="bg-gray-200">
+										<td className=""/>
+										<td className="woo-next-checkout-total font-normal text-xl">Shipping Charges</td>
+										<td className="woo-next-checkout-total font-bold text-xl">{ cart?.cartItems?.[ 0 ]?.currency ?? '' }{ cart?.shippingCharges ?? '' }</td>
+								   </tr>
+								</>   
+							  ) : ''
+
+						}
+						
 						{/*Total*/}
 						<tr className="bg-gray-200">
 							<td className=""/>

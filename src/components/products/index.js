@@ -1,20 +1,87 @@
 import { isArray, isEmpty } from 'lodash';
 import Product from './product';
 import styles from '@/styles/Home.module.css'
+import $ from "jquery";
+import UpdateUrl from "../../../src/components/filter";
+import { useRouter } from "next/router";
 
-const Products = ({ products }) => {
+	
+
+const Products = ({ products ,params}) => {
+	const router = useRouter();
 	
 	if ( isEmpty( products ) || !isArray( products ) ) {
 		return null;
 	}
+
 	
+	const handleChange_Per_page = () =>
+    {
+        $("#posts_per_page").val($("#id_per_page_select").val());
+        $("#orderby").val($("#id_orderby_select").val());
+
+	  	UpdateUrl({router});
+	   
+    }
+	const handleChange_reset_form = () => {
+		$('#shop_filter').trigger("reset");
+		$('#page_no').val('1');
+	
+		// set order
+		$('#orderby').val('menu_order');
+		$(".orderby_select").val('menu_order');
+	
+		//// set per page
+		$('#posts_per_page').val(24);
+		$(".per_page_select").val('24');
+	
+		if($('#current_page_term_name').val() == 'product_cat')
+		{
+			$('#cat_id').val($('#current_page_term_id').val());
+		}else{
+			$('#cat_id').val('-1');
+		}
+		
+		$('#min_price').val($('#range_min_price').val());
+		$('#max_price').val($('#range_max_price').val());
+		$(".shop_filter_ajax_click_fun").prop( "checked", false );
+	
+		// acf field search 
+		$('#acf_text_field input').val('');
+		UpdateUrl({router});
+	
+	}
+	const per_page_list = [24,36,48];
+	const orderby_list = [
+		{key : "menu_order", val: "Default sorting"},
+		{key : "popularity", val: "Sort by popularity"},
+		{key : "rating", val: "Sort by average rating"},
+		{key : "date", val: "Sort by latest"},
+		{key : "price", val: "Sort by price: low to high"},
+		{key : "price-desc", val: "Sort by price: high to low"}
+	  ];
 	return (
 		<>
+		<div className='main_filter'>
+		<div className="flex items-center justify-between flex-wrap container mx-auto">
+					<select value={router.query.posts_per_page ?? {}} id='id_per_page_select' onChange={handleChange_Per_page} className="per_page_select" name='per_page'>
+						{per_page_list.map(per_page_no=>(
+							<option key={per_page_no} value={per_page_no}>{per_page_no}</option> 
+						))}
+					</select>
+					
+					<select value={router.query.orderby  ?? {}} id='id_orderby_select' onChange={handleChange_Per_page} className="orderby_select" name='orderby'>
+						{orderby_list.map(orderby_val=>(
+							<option key={orderby_val.key} value={orderby_val.key}>{orderby_val.val}</option>
+						))}
+							
+					</select>
+		</div>
 		<div className={styles.row}>
 			<div className={styles.left_side_bar}>
 				
 			<form id="shop_filter" shop-form="1" response_data_sidebar="">
-					<div className="reset_form"> Clear All </div>
+				<div className="reset_form" onClick={handleChange_reset_form}> Clear All </div>
 					
 					{ /* <!-- default field -->*/}
 				<input type="hidden" setURL="no" name="range_min_price" value="1" id="range_min_price"></input>
@@ -38,15 +105,14 @@ const Products = ({ products }) => {
 			</form>
 			
 			</div>
-			<div className={styles.product_filter_right + " flex flex-wrap -mx-3 overflow-hidden product-filter-right "}>
-				
+			<div id="product_data" className={styles.product_filter_right+ " flex flex-wrap -mx-3 overflow-hidden product-filter-right "}>
 				{ products.length ? products.map( product => {
 					return (
 						<Product key={ product?.id } product={product} />
 					)
 				} ) : null }
-			
 			</div>
+		</div>
 		</div>
 		</>
 	)

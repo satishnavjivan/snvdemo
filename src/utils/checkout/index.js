@@ -55,14 +55,9 @@ export const handleStripeCheckout = async ( input, products, setRequestError, se
 	setIsProcessing( true );
 	const orderData = getCreateOrderData( input, products );
 	const customerOrderData = await createTheOrder( orderData, setRequestError, '' );
-	const cartCleared = await clearCart( setCart, () => {
-	} );
+	
 	setIsProcessing( false );
 	
-	if ( isEmpty( customerOrderData?.orderId ) || cartCleared?.error ) {
-		setRequestError( 'Clear cart failed' );
-		return null;
-	}
 	
 	// On success show stripe form.
 	setCreatedOrderData( customerOrderData );
@@ -89,16 +84,24 @@ const createCheckoutSessionAndRedirect = async ( products, input, orderId ) => {
 		mode: 'payment',
 	};
 	console.log( 'sessionData', sessionData );
+	
 	let session = {};
 	try {
 		session = await createCheckoutSession( sessionData );
 	} catch ( err ) {
 		console.log( 'createCheckout session error', err );
 	}
+	//console.log( 'session', session );
 	try {
 		const stripe = await loadStripe( process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY );
 		if ( stripe ) {
 			stripe.redirectToCheckout( { sessionId: session.id } );
+			const cartCleared = await clearCart( setCart, () => {
+			} );
+			if ( isEmpty( customerOrderData?.orderId ) || cartCleared?.error ) {
+				setRequestError( 'Clear cart failed' );
+				return null;
+			}
 		}
 	} catch ( error ) {
 		console.log( error );
@@ -121,8 +124,8 @@ const getStripeLineItems = ( products ) => {
 			quantity: product?.quantity ?? 0,
 			name: product?.data?.name ?? '',
 			images: [ product?.data?.images?.[ 0 ]?.src ?? '' ?? '' ],
-			amount: Math.round( ( product?.line_subtotal ?? 0 ) * 100 ),
-			currency: 'usd',
+			amount: Math.round( ( product?.data.price ?? 0 ) * 100 ),
+			currency: 'AUD',
 		};
 	} );
 };

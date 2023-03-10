@@ -10,20 +10,36 @@
  import axios from 'axios';
  import Layout from '../../src/components/layout';
  import { useRouter } from "next/router";
- import $ from "jquery"
+ import $ from "jquery";
+ import UpdateUrl from "../../src/components/filter";
+ import { GetServerSideProps } from "next";
 
- 
- export default function cat_slug({ headerFooter, products, params,payload }) {
-    console.log(params);
-    console.log(payload);
-    const router = useRouter();
-    const cat_slug = router.query.cat_slug;
-    const cat_url = '/cat/';
-    const InputClicl = () =>
+
+ const InputClicl = () =>
     {
         console.log($("#range_max_price").val());
-      //router.push(cat_url);
+        UpdateUrl();
+         //console.log('object1',get_query());
     }
+     
+ function get_query(){
+        var url = document.location.href;
+        var qs = url.substring(url.indexOf('?') + 1).split('&');
+        for(var i = 0, result = {}; i < qs.length; i++){
+            qs[i] = qs[i].split('=');
+            result[qs[i][0]] = decodeURIComponent(qs[i][1]);
+        }
+        return result;
+    }
+ export default function cat_slug({ headerFooter, products, params ,found_posts}) {
+    //console.log('params',params);
+    //const router = useRouter();
+    //const cat_slug = router.query.cat_slug;
+    //const { asPath } = useRouter();
+    //console.log('asPath',asPath);
+    //console.log('products',products);
+    //console.log('found_posts',found_posts);
+    
     
     if(isEmpty(products))
     {
@@ -35,65 +51,36 @@
     }else{
         return (
             <Layout headerFooter={headerFooter || {}}>
-                
                 <a onClick={InputClicl}>Go Cat </a>
-                <Products products={products}/>
+                <Products products={products} params={params}/>
+                
             </Layout>
         )
     }
     
  }
- 
- export async function getStaticProps({ params = {} } = {}) {
-     
-     const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
-     //const { data: products } = await getProductsData();
-     let payload = {cat_slug:params?.cat_slug };
-     const { data: products } = await axios.post( SHOP_FILTER_ENDPOINT,payload );
-     
-     return {
-         props: {
-             headerFooter: headerFooterData?.data ?? {},
-             products: products.products ?? {},
-             params: params?.cat_slug ?? {},
-             payload: payload ?? {}
-         },
-         
-         /**
-          * Revalidate means that if a new request comes to server, then every 1 sec it will check
-          * if the data is changed, if it is changed then it will update the
-          * static file inside .next folder with the new data, so that any 'SUBSEQUENT' requests should have updated data.
-          */
-         revalidate: 1,
-     };
- }
- 
- export async function getStaticPaths() {
+
+
+export async function getServerSideProps(context){
+    const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
+   // let payload = {cat_slug:'bathroom-basins', posts_per_page : posts_per_page };
+    const { data: products } = await axios.post( SHOP_FILTER_ENDPOINT,context.query );
+    //const { data: found_posts } = await axios.post( SHOP_FILTER_ENDPOINT,context.query );
+
+    // In this example, we might call a database or an API with given ID from the query parameters
+    // I'll call a fake API to get the players name from a fake database
     
-    // By default, we don't render any Pagination pages as
-    // we're considering them non-critical pages
   
-    // To enable pre-rendering of Category pages:
-  
-    // 1. Add import to the top of the file
-    //
-    // import { getAllPosts, getPagesCount } from 'lib/posts';
-  
-    // 2. Uncomment the below
-    //
-    // const { posts } = await getAllPosts({
-    //   queryIncludes: 'index',
-    // });
-    // const pagesCount = await getPagesCount(posts);
-  
-    // const paths = [...new Array(pagesCount)].map((_, i) => {
-    //   return { params: { page: String(i + 1) } };
-    // });
-  
-    // 3. Update `paths` in the return statement below to reference the `paths` constant above
-  
+    // Return the ID to the component
     return {
-      paths: [],
-      fallback: 'blocking',
+        props: {
+            headerFooter: headerFooterData?.data ?? {},
+            products: products.products ?? {},
+            //found_posts: found_posts.found_posts ?? {},
+            params: context?.query ?? {},
+        },
     };
-  }
+  };
+  
+ 
+
