@@ -68,9 +68,9 @@ export const getCreateOrderData = ( order, products ) => {
 		line_items: getCreateOrderLineItems( products ),
 		shipping_lines: [
 			{
-			  method_id: "flat_rate",
-			  method_title: "Flat Rate",
-			  total: "10.00"
+			  method_id: "shipping",
+			  method_title: "shipping Rate",
+			  total: "1.00"
 			}
 		  ]
 	};
