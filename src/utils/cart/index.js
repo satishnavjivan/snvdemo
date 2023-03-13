@@ -171,7 +171,7 @@ const calculateCartQtyAndPrice = ( cartItems ) => {
 		qtyAndPrice.totalPrice += item?.line_total ?? 0;
 		qtyAndPrice.shippingCharges += 1;
 	} )
-	//qtyAndPrice.totalPrice +=qtyAndPrice.shippingCharges;
+	qtyAndPrice.totalPrice +=qtyAndPrice.shippingCharges;
 	console.log('cartItems',cartItems);
 	return qtyAndPrice;
 }

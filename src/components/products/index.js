@@ -4,6 +4,8 @@ import styles from '@/styles/Home.module.css'
 import $ from "jquery";
 import UpdateUrl from "../../../src/components/filter";
 import { useRouter } from "next/router";
+import { useState } from 'react';
+import ReactPaginate from 'react-paginate';
 
 	
 
@@ -17,7 +19,7 @@ const Products = ({ products ,params}) => {
 	
 	const handleChange_Per_page = () =>
     {
-        $("#posts_per_page").val($("#id_per_page_select").val());
+        //$("#posts_per_page").val($("#id_per_page_select").val());
         $("#orderby").val($("#id_orderby_select").val());
 
 	  	UpdateUrl({router});
@@ -60,11 +62,41 @@ const Products = ({ products ,params}) => {
 		{key : "price", val: "Sort by price: low to high"},
 		{key : "price-desc", val: "Sort by price: high to low"}
 	  ];
+	
+	   // Here we use item offsets; we could also use page offsets
+		// following the API or data you're working with.
+		const [itemOffset, setItemOffset] = useState(0)
+		const [itemsPerPage, setItemsPerPage] = useState(24)
+
+		// Simulate fetching items from another resources.
+		// (This could be items from props; or items loaded in a local state
+		// from an API endpoint with useEffect and useState)
+		const endOffset = parseInt(itemOffset) + parseInt(itemsPerPage);
+		//console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+		const currentItems = products.slice(itemOffset, endOffset);
+		const pageCount = Math.ceil(products.length / itemsPerPage);
+
+		// Invoke when user click to request another page.
+		const handlePageClick = (event) => {
+			const newOffset = (event.selected * itemsPerPage) % products.length;
+			console.log(
+			`User requested page number ${event.selected}, which is offset ${newOffset}`
+			);
+			setItemOffset(newOffset);
+		};
+
+		
+		const handlePerPageClick = event => {
+			setItemOffset(0);
+			setItemsPerPage(event.target.value);
+		  };
+		  //console.log('currentItems',currentItems);
+		  //console.log('newOffset',itemOffset);
 	return (
 		<>
 		<div className='main_filter'>
 		<div className="flex items-center justify-between flex-wrap container mx-auto">
-					<select value={router.query.posts_per_page ?? {}} id='id_per_page_select' onChange={handleChange_Per_page} className="per_page_select" name='per_page'>
+					<select  onChange={handlePerPageClick} name='per_page'>
 						{per_page_list.map(per_page_no=>(
 							<option key={per_page_no} value={per_page_no}>{per_page_no}</option> 
 						))}
@@ -106,12 +138,21 @@ const Products = ({ products ,params}) => {
 			
 			</div>
 			<div id="product_data" className={styles.product_filter_right+ " flex flex-wrap -mx-3 overflow-hidden product-filter-right "}>
-				{ products.length ? products.map( product => {
+				{ currentItems.length ? currentItems.map( product => {
 					return (
 						<Product key={ product?.id } product={product} />
 					)
 				} ) : null }
 			</div>
+			<ReactPaginate
+				breakLabel="..."
+				nextLabel="next >"
+				onPageChange={handlePageClick}
+				pageRangeDisplayed={2}
+				pageCount={pageCount}
+				previousLabel="< previous"
+				renderOnZeroPageCount={null}
+			/>
 		</div>
 		</div>
 		</>

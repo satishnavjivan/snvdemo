@@ -7,7 +7,7 @@ import { clearCart } from '../../utils/cart';
 
 const CartItemsContainer = () => {
 	const [ cart, setCart ] = useContext( AppContext );
-	const { cartItems, totalPrice, totalQty } = cart || {};
+	const { cartItems, totalPrice, totalQty,shippingCharges } = cart || {};
 	const [ isClearCartProcessing, setClearCartProcessing ] = useState( false );
 	
 	// Clear the entire cart.
@@ -43,6 +43,17 @@ const CartItemsContainer = () => {
 					<div className="woo-next-cart-total-container lg:col-span-1 p-5 pt-0">
 						<h2>Cart Total</h2>
 						<div className="flex grid grid-cols-3 bg-gray-100 mb-4">
+						{/*Shipping changes*/}
+						{
+							 (shippingCharges != '') ? (
+								<>
+										<p className="col-span-2 p-2 mb-0">Shipping Charges</p>
+										<p className="col-span-1 p-2 mb-0">{cartItems?.[0]?.currency ?? ''}{ shippingCharges }</p>
+								</>   
+							  ) : ''
+
+						}
+						
 							<p className="col-span-2 p-2 mb-0">Total({totalQty})</p>
 							<p className="col-span-1 p-2 mb-0">{cartItems?.[0]?.currency ?? ''}{ totalPrice }</p>
 						</div>
